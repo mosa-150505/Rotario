@@ -1,9 +1,16 @@
+#define _GNU_SOURCE
+#define _POSIX_C_SOURCE 200809L
+#define _USE_MATH_DEFINES
+
 #include <stdio.h>
 #include <math.h>
 #include <unistd.h>
 #include <string.h>
 #include <assert.h>
-#include "ascii.h"
+#include "../ascii.h"
+
+#define COLS 100
+#define ROWS 40
 
 #define COLS 100
 #define ROWS 40
@@ -53,7 +60,7 @@ int main() {
                 int ty = (int) ((y * p + 0.5f) * ROWS);
                 int idx = tx + ty * COLS;
 
-                if (idx < 0 || idx > sizeof(clr))
+                if (idx < 0 || idx > (int) sizeof(clr))
                     continue;
 
                 float tz = rz + 2;
@@ -101,4 +108,3 @@ int main() {
 
     return 0;
 }
-
