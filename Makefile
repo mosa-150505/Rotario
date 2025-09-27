@@ -1,53 +1,46 @@
-# Compilateur et options
 CC = gcc
-CFLAGS = -O3 -std=c99 -Wall -Wextra -pedantic
+CFLAGS = -O3 -std=c99 -Wall -Wextra -pedantic -I. -Wno-overlength-strings
 LIBS = -lm
 
-# Fichiers
 TARGET = ascii3d
 SRC = src/main.c
 HEADER = ascii.h
 CONVERTER = src/image_2_ascii.py
 
-# Couleurs pour les messages (optionnel mais joli)
+
 GREEN = \033[0;32m
 NC = \033[0m
 
 .PHONY: all build run clean example help
 
-# Construction par défaut
 all: build
 
-# Compiler le binaire
+# Binary compilation
 build: $(SRC)
-	@echo "$(GREEN)📦 Compilation de $(TARGET)...$(NC)"
+	@printf "\n$(GREEN)... Compiling $(TARGET)...$(NC)\n"
 	$(CC) $(CFLAGS) -o $(TARGET) $(SRC) $(LIBS)
-	@echo "$(GREEN)✅ Prêt ! Lance avec 'make run'$(NC)"
+	@printf "\n$(GREEN):) Ready !! You can run with 'make run'$(NC)\n"
 
-# Lancer l'animation
+# Starting animation
 run: $(TARGET)
 	./$(TARGET)
 
-# Générer ascii.h à partir d'une image d'exemple
-example: examples/github.png
-	@echo "$(GREEN)🎨 Conversion de l'image exemple...$(NC)"
+# Generate aschii.h from a given PNG image
+rotario: examples/github.png
+	@printf "\n$(GREEN)... Converting your image ...$(NC)\n"
 	python3 $(CONVERTER) $<
-	@echo "$(GREEN)✅ Fichier $(HEADER) généré.$(NC)"
+	@printf "\n$(GREEN) file successfully generated$(NC)\n"
 
-# Nettoyer les fichiers générés
+# Cleaning data
 clean:
 	rm -f $(TARGET) $(HEADER)
-	@echo "$(GREEN)🧹 Nettoyage terminé.$(NC)"
+	@printf "\n(^-^)$(GREEN) Successfully cleaned$(NC)\n"
 
 # Aide
 help:
-	@echo "🔧 Commandes disponibles :"
-	@echo "  make          → compiler le projet"
-	@echo "  make run      → lancer l'animation"
-	@echo "  make example  → générer ascii.h depuis examples/logo.png"
-	@echo "  make clean    → supprimer les fichiers compilés et ascii.h"
-	@echo "  make help     → afficher cette aide"
-
-# Dépendance : ne pas recompiler si rien n'a changé
-$(TARGET): $(SRC)
-
+	@printf "🔧 Help commands :\n"
+	@printf "  make          → to compile rotario\n"
+	@printf "  make run      → to lauch animation\n"
+	@printf "  make example  → generate ascii.h from examples/github.png\n"
+	@printf "  make clean    → delete compiled files\n"
+	@printf "  make help     → to display help\n"
