@@ -29,7 +29,7 @@ run: $(TARGET)
 	./$(TARGET)
 
 # Générer ascii.h à partir d'une image d'exemple
-example: examples/logo.png
+example: examples/github.png
 	@echo "$(GREEN)🎨 Conversion de l'image exemple...$(NC)"
 	python3 $(CONVERTER) $<
 	@echo "$(GREEN)✅ Fichier $(HEADER) généré.$(NC)"
@@ -50,3 +50,4 @@ help:
 
 # Dépendance : ne pas recompiler si rien n'a changé
 $(TARGET): $(SRC)
+
