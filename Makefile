@@ -7,40 +7,35 @@ SRC = src/main.c
 HEADER = ascii.h
 CONVERTER = src/image_2_ascii.py
 
-
 GREEN = \033[0;32m
 NC = \033[0m
 
-.PHONY: all build run clean example help
+.PHONY: all build run rotario clean help check-pydeps
 
-all: build
+all: $(HEADER) build
 
-# Binary compilation
-build: $(SRC)
+build: $(SRC) $(HEADER)
 	@printf "\n$(GREEN)... Compiling $(TARGET)...$(NC)\n"
-	$(CC) $(CFLAGS) -o $(TARGET) $(SRC) $(LIBS)
-	@printf "\n$(GREEN):) Ready !! You can run with 'make run'$(NC)\n"
+#	$(CC) $(CFLAGS) -o $(TARGET) $(SRC) $(LIBS)
+	@printf "\n$(GREEN)... Ready ...$(NC)\n"
 
-# Starting animation
+$(HEADER): examples/github.png
+	@printf "\n$(GREEN)Generating ...$@\n"
+	@[ -f "$(CONVERTER)" ] || { echo "Cannot find $(CONVERTER)"; exit 1; }
+	@python3 -c "import PIL" >/dev/null 2>&1 || { echo "Need to install Pillow lib"; exit 1; }
+	@cd src && python3 image_2_ascii.py ../$< && mv ascii.h ..
+	@printf "$(GREEN)✓ $(HEADER) généré$(NC)\n"
+
 run: $(TARGET)
 	./$(TARGET)
 
-# Generate aschii.h from a given PNG image
-rotario: examples/github.png
-	@printf "\n$(GREEN)... Converting your image ...$(NC)\n"
-	python3 $(CONVERTER) $<
-	@printf "\n$(GREEN) file successfully generated$(NC)\n"
-
-# Cleaning data
 clean:
-	rm -f $(TARGET) $(HEADER)
-	@printf "\n(^-^)$(GREEN) Successfully cleaned$(NC)\n"
+	rm -f $(TARGET) $(HEADER) core
+	@printf "\n$(GREEN)Cleaned ...$(NC)\n"
 
-# Aide
 help:
-	@printf "🔧 Help commands :\n"
-	@printf "  make          → to compile rotario\n"
-	@printf "  make run      → to lauch animation\n"
-	@printf "  make example  → generate ascii.h from examples/github.png\n"
-	@printf "  make clean    → delete compiled files\n"
-	@printf "  make help     → to display help\n"
+	@printf "🔧 Commandes :\n"
+	@printf "  make        → generate ascii.h then compile\n"
+	@printf "  make run    → launch 3D animation\n"
+	@printf "  make clean  → clean some garbage\n"
+	@printf "  make help   → display help\n"
