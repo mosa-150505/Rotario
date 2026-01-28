@@ -1,0 +1,15 @@
+# Bin
+ascii3d
+*.o
+core
+
+ascii.h
+
+# Temp py files
+__pycache__/
+*.pyc
+*.pyo
+
+#Editors
+*~
+.*.swp
